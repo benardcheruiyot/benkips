@@ -92,7 +92,7 @@ jobs:
           
           # Stop existing PM2 process
           echo "🛑 Stopping existing application..."
-          pm2 delete ${{ env.APP_NAME }} || true
+          pm2 delete fundfast-production || true
           
           # Start application with PM2
           echo "🚀 Starting application with PM2..."
@@ -112,7 +112,7 @@ jobs:
             echo "✅ Health check passed"
           else
             echo "⚠️  Health check failed - checking logs..."
-            pm2 logs ${{ env.APP_NAME }} --lines 20
+            pm2 logs fundfast-production --lines 20
           fi
 
     - name: ✅ Deployment Success Notification

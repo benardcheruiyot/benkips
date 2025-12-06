@@ -1,6 +1,5 @@
-name: Deploy Express App to EC2 Ubuntu
-name: Deploy Express App to EC2 Ubuntu
 
+name: Deploy Express App to EC2 Ubuntu
 on:
   push:
     branches: [ main ]

@@ -9,11 +9,11 @@ module.exports = {
     // Environment variables
     env: {
       NODE_ENV: 'development',
-      PORT: 3004
+      PORT: 3006
     },
     env_production: {
       NODE_ENV: 'production',
-      PORT: 3004
+      PORT: 3006
     },
     
     // Logging

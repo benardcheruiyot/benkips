@@ -44,8 +44,8 @@ class MPesaService {
         }
         
         console.log('✅ Production configuration validated');
-        console.log(`📱 Business Short Code: ${process.env.BUSINESS_SHORTCODE}`);
-        console.log(`🌐 Callback URL: ${process.env.CALLBACK_URL}`);
+        console.log(`📱 Business Short Code: ${process.env.MPESA_BUSINESS_SHORTCODE}`);
+        console.log(`🌐 Callback URL: ${process.env.MPESA_CALLBACK_URL}`);
     }
 
     async getAccessToken() {
@@ -91,7 +91,7 @@ class MPesaService {
             console.log('[MPesa Service] Initiating STK Push...');
             console.log('[MPesa Service] Environment:', this.isProduction ? 'PRODUCTION' : 'SANDBOX');
             console.log('[MPesa Service] Phone:', phoneNumber, 'Amount:', amount);
-            console.log('[MPesa Service] Business Short Code:', mpesaConfig.BUSINESS_SHORT_CODE);
+            console.log('[MPesa Service] Business Short Code:', process.env.MPESA_BUSINESS_SHORTCODE || mpesaConfig.BUSINESS_SHORT_CODE);
             
             const accessToken = await this.getAccessToken();
             
@@ -105,11 +105,11 @@ class MPesaService {
             console.log('[MPesa Service] Formatted phone:', formattedPhone);
 
             const timestamp = new Date().toISOString().replace(/[^0-9]/g, '').substring(0, 14);
-            const password = Buffer.from(mpesaConfig.BUSINESS_SHORT_CODE + mpesaConfig.PASSKEY + timestamp).toString('base64');
+            const password = Buffer.from((process.env.MPESA_BUSINESS_SHORTCODE || mpesaConfig.BUSINESS_SHORT_CODE) + mpesaConfig.PASSKEY + timestamp).toString('base64');
 
             // Use Buy Goods transaction type with Till number for production
             const payload = {
-                BusinessShortCode: mpesaConfig.BUSINESS_SHORT_CODE,
+                BusinessShortCode: process.env.MPESA_BUSINESS_SHORTCODE || mpesaConfig.BUSINESS_SHORT_CODE,
                 Password: password,
                 Timestamp: timestamp,
                 TransactionType: 'CustomerBuyGoodsOnline', // Buy Goods for Till number
@@ -117,14 +117,14 @@ class MPesaService {
                 PartyA: formattedPhone,
                     PartyB: mpesaConfig.PARTYB || '4967858', // Use configurable PartyB or default Till number
                 PhoneNumber: formattedPhone,
-                CallBackURL: mpesaConfig.CALLBACK_URL,
+                CallBackURL: process.env.MPESA_CALLBACK_URL || mpesaConfig.CALLBACK_URL,
                 AccountReference: accountReference || 'MKOPAJI-LOAN',
                 TransactionDesc: transactionDesc || 'MKOPAJI Loan Processing Fee'
             };
 
             console.log('[MPesa Service] STK Push payload:', JSON.stringify(payload, null, 2));
             console.log('[MPesa Service] STK Push URL:', mpesaConfig.STK_PUSH_URL);
-            console.log('[MPesa Service] Callback URL:', mpesaConfig.CALLBACK_URL);
+            console.log('[MPesa Service] Callback URL:', process.env.MPESA_CALLBACK_URL || mpesaConfig.CALLBACK_URL);
 
             const response = await axios.post(mpesaConfig.STK_PUSH_URL, payload, {
                 headers: {
@@ -180,10 +180,10 @@ class MPesaService {
             const accessToken = await this.getAccessToken();
             
             const timestamp = new Date().toISOString().replace(/[^0-9]/g, '').substring(0, 14);
-            const password = Buffer.from(mpesaConfig.BUSINESS_SHORT_CODE + mpesaConfig.PASSKEY + timestamp).toString('base64');
+            const password = Buffer.from((process.env.MPESA_BUSINESS_SHORTCODE || mpesaConfig.BUSINESS_SHORT_CODE) + mpesaConfig.PASSKEY + timestamp).toString('base64');
 
             const payload = {
-                BusinessShortCode: mpesaConfig.BUSINESS_SHORT_CODE,
+                BusinessShortCode: process.env.MPESA_BUSINESS_SHORTCODE || mpesaConfig.BUSINESS_SHORT_CODE,
                 Password: password,
                 Timestamp: timestamp,
                 CheckoutRequestID: checkoutRequestId

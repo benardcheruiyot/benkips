@@ -178,7 +178,7 @@ if command -v ufw &> /dev/null; then
     ufw allow 22    # SSH
     ufw allow 80    # HTTP
     ufw allow 443   # HTTPS
-    ufw allow 3000  # Application port
+    ufw allow 3007  # Application port
     print_success "Firewall configured"
 fi
 
@@ -187,7 +187,7 @@ print_status "Performing final health checks..."
 
 # Check if application is responding
 sleep 3
-if curl -f http://localhost:3000/api/health &> /dev/null; then
+if curl -f http://localhost:3007/api/health &> /dev/null; then
     print_success "Application health check passed"
 else
     print_warning "Application health check failed - please check logs"
@@ -213,7 +213,7 @@ echo "- View logs: pm2 logs fundfast"
 echo "- Restart app: pm2 restart fundfast"
 echo "- Stop app: pm2 stop fundfast"
 echo "- Monitor: pm2 monit"
-echo "- Health check: curl http://localhost:3000/api/health"
+echo "- Health check: curl http://localhost:3007/api/health"
 echo ""
 print_warning "Remember to:"
 echo "- Setup SSL certificate (Let's Encrypt recommended)"

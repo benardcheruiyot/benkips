@@ -52,12 +52,12 @@ ln -sf "${SITE_CONF}" "${SITE_LINK}"
 
 if ! nginx -t; then
   echo "nginx config test failed. Restoring backups and exiting." >&2
-    server_name www.yourdomain.com;
+    server_name hella.mkopaji.com;
   rm -f "${SITE_CONF}" || true
-    ssl_certificate /etc/letsencrypt/live/yourdomain.com/fullchain.pem;
-    ssl_certificate_key /etc/letsencrypt/live/yourdomain.com/privkey.pem;
+    ssl_certificate /etc/letsencrypt/live/hella.mkopaji.com/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/hella.mkopaji.com/privkey.pem;
 fi
-    return 301 https://yourdomain.com$request_uri;
+    return 301 https://hella.mkopaji.com$request_uri;
 systemctl reload nginx || true
 
 # Install certbot if missing (apt-based systems)

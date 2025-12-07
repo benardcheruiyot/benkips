@@ -1,9 +1,9 @@
 #!/bin/bash
 
-# EC2 Ubuntu Server Setup Script for FundFast Deployment
+# EC2 Ubuntu Server Setup Script for hella.mkopaji.com Deployment
 # Run this script on your EC2 instance to prepare it for GitHub Actions deployment
 
-echo "🚀 Setting up EC2 Ubuntu Server for FundFast deployment..."
+echo "🚀 Setting up EC2 Ubuntu Server for hella.mkopaji.com deployment..."
 
 # Colors for output
 RED='\033[0;31m'
@@ -83,7 +83,7 @@ sudo ufw --force enable
 sudo ufw allow ssh
 sudo ufw allow 80/tcp
 sudo ufw allow 443/tcp
-sudo ufw allow 3000/tcp
+sudo ufw allow 3007/tcp
 
 # Install Nginx (optional but recommended)
 echo "Installing Nginx..."
@@ -92,13 +92,13 @@ sudo systemctl enable nginx
 sudo systemctl start nginx
 
 # Create basic Nginx configuration
-sudo tee /etc/nginx/sites-available/fundfast > /dev/null << 'NGINX_CONF'
+sudo tee /etc/nginx/sites-available/hella.mkopaji.com > /dev/null << 'NGINX_CONF'
 server {
     listen 80;
     server_name _;
 
     location / {
-        proxy_pass http://localhost:3006;
+        proxy_pass http://localhost:3007;
         proxy_http_version 1.1;
         proxy_set_header Upgrade $http_upgrade;
         proxy_set_header Connection 'upgrade';
@@ -113,7 +113,7 @@ server {
 NGINX_CONF
 
 # Enable the site
-sudo ln -sf /etc/nginx/sites-available/fundfast /etc/nginx/sites-enabled/
+sudo ln -sf /etc/nginx/sites-available/hella.mkopaji.com /etc/nginx/sites-enabled/
 sudo rm -f /etc/nginx/sites-enabled/default
 sudo nginx -t && sudo systemctl reload nginx
 
@@ -210,7 +210,7 @@ sudo ufw --force enable
 sudo ufw allow ssh
 sudo ufw allow 80/tcp
 sudo ufw allow 443/tcp
-sudo ufw allow 3000/tcp
+sudo ufw allow 3007/tcp
 
 # Install Nginx (optional but recommended)
 print_status "Installing Nginx..."
@@ -225,7 +225,7 @@ server {
     server_name _;
 
     location / {
-        proxy_pass http://localhost:3006;
+        proxy_pass http://localhost:3007;
         proxy_http_version 1.1;
         proxy_set_header Upgrade $http_upgrade;
         proxy_set_header Connection 'upgrade';

@@ -30,7 +30,7 @@ MLOAN/
 - ✅ **Responsive Design** - Works on all devices
 
 ### Server Status
-🚀 **Server is RUNNING** on https://hella.mkopaji.com:3004
+🚀 **Server is RUNNING** on https://hella.mkopaji.com:3007
 💰 **M-Pesa Integration**: ENABLED (needs credentials)
 
 ## 🔧 Next Steps to Enable Real STK Push
@@ -70,7 +70,7 @@ For local development:
 npm install -g ngrok
 
 # Expose your local server
-ngrok http 3000
+ngrok http 3007
 
 # Copy the https URL (e.g., https://abc123.ngrok.io)
 # Update CALLBACK_URL in config with: https://abc123.ngrok.io/api/mpesa-callback
@@ -79,7 +79,7 @@ ngrok http 3000
 ### 4. Test STK Push
 
 1. **Start the server**: `npm run dev`
-2. **Open the app**: http://localhost:3000
+2. **Open the app**: http://localhost:3007
 3. **Apply for a loan**: Click "Get Your Loan Now"
 4. **Use test phone number**: 254708374149 (Safaricom test)
 5. **Test with small amount**: Start with 10-50 KSh
@@ -100,7 +100,7 @@ node setup.js
 code kopesha-workspace.code-workspace
 
 # Check server health
-curl http://localhost:3000/api/health
+curl http://localhost:3007/api/health
 ```
 
 ## 🔍 Testing the STK Push

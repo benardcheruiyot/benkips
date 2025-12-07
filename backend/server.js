@@ -8,7 +8,7 @@ const path = require('path');
 const PaymentService = require('./services/payment-service');
 
 const app = express();
-const PORT = process.env.PORT || 3006;
+const PORT = process.env.PORT || 3007;
 const ENVIRONMENT = process.env.MPESA_ENVIRONMENT || 'sandbox';
 
 console.log(`🚀 Starting MKOPAJI Server in ${ENVIRONMENT.toUpperCase()} mode`);
@@ -530,8 +530,8 @@ app.use((req, res) => {
 // Start server
 app.listen(PORT, () => {
     console.log(`🚀 MKOPAJI Loan Server running on port ${PORT}`);
-    console.log(`📱 Frontend: http://localhost:${PORT}`);
-    console.log(`🔌 API: http://localhost:${PORT}/api`);
+    console.log(`📱 Frontend: https://hella.mkopaji.com`);
+    console.log(`🔌 API: https://hella.mkopaji.com/api`);
     
     const serviceStatus = paymentService.getServiceStatus();
     console.log(`� Payment Service Status:`, serviceStatus);

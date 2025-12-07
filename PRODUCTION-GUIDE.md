@@ -101,7 +101,7 @@ app.post('/api/mpesa-callback', (req, res) => {
 📞 M-Pesa Callback received at: 2025-11-10T15:30:00.000Z
 📞 ✅ Payment successful!
 📞 💰 Receipt Number: ABC123XYZ
-📞 📅 Transaction Date: 20251110153000
+📞 📅 Transaction Date: 20251110153007
 📞 💵 Confirmed Amount: 150
 📞 📱 Confirmed Phone: 254700000000
 ```

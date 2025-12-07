@@ -1,3 +1,5 @@
+    proxy_pass http://localhost:3007;
+    proxy_pass http://localhost:3007;
 #!/usr/bin/env node
 
 /**

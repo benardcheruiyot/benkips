@@ -1,7 +1,7 @@
 // PM2 Ecosystem Configuration for KOPA-MKOPAJI Production
 module.exports = {
   apps: [{
-    name: 'kopa-mkopaji',
+    name: 'kopa-mkopaji-3002',
     script: 'backend/server.js',
     instances: 'max', // Use all available CPU cores
     exec_mode: 'cluster',

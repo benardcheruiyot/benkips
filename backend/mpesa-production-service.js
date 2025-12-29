@@ -51,45 +51,55 @@ class ProductionMPesaService {
     }
 
     async getAccessToken() {
-        try {
-            // Check if we have a valid cached token
-            if (this.accessToken && this.tokenExpiry && Date.now() < this.tokenExpiry) {
-                return this.accessToken;
-            }
+        // Retry logic with exponential backoff
+        const maxRetries = 4;
+        let attempt = 0;
+        let lastError;
+        while (attempt < maxRetries) {
+            try {
+                // Check if we have a valid cached token
+                if (this.accessToken && this.tokenExpiry && Date.now() < this.tokenExpiry) {
+                    return this.accessToken;
+                }
 
-            console.log('[M-Pesa Production] 🔑 Requesting new access token...');
-            
-            const auth = Buffer.from(`${this.config.consumerKey}:${this.config.consumerSecret}`).toString('base64');
-            
-            const response = await axios.get(this.authUrl, {
-                headers: {
-                    'Authorization': `Basic ${auth}`,
-                    'Content-Type': 'application/json'
-                },
-                timeout: 10000 // 10 second timeout
-            });
+                if (attempt > 0) {
+                    const wait = Math.pow(2, attempt) * 500; // 1s, 2s, 4s, 8s
+                    console.warn(`[M-Pesa Production] 🔄 Retrying access token request in ${wait}ms (attempt ${attempt + 1}/${maxRetries})`);
+                    await new Promise(res => setTimeout(res, wait));
+                }
 
-            if (response.data && response.data.access_token) {
-                this.accessToken = response.data.access_token;
-                // Set expiry 1 minute before actual expiry for safety
-                this.tokenExpiry = Date.now() + (response.data.expires_in * 1000) - 60000;
-                
-                console.log('[M-Pesa Production] ✅ Access token obtained successfully');
-                console.log(`[M-Pesa Production] 📅 Token expires in ${response.data.expires_in} seconds`);
-                
-                return this.accessToken;
-            } else {
-                throw new Error('Invalid token response structure');
+                console.log('[M-Pesa Production] 🔑 Requesting new access token...');
+                const auth = Buffer.from(`${this.config.consumerKey}:${this.config.consumerSecret}`).toString('base64');
+                const response = await axios.get(this.authUrl, {
+                    headers: {
+                        'Authorization': `Basic ${auth}`,
+                        'Content-Type': 'application/json'
+                    },
+                    timeout: 10000 // 10 second timeout
+                });
+
+                if (response.data && response.data.access_token) {
+                    this.accessToken = response.data.access_token;
+                    // Set expiry 1 minute before actual expiry for safety
+                    this.tokenExpiry = Date.now() + (response.data.expires_in * 1000) - 60000;
+                    console.log('[M-Pesa Production] ✅ Access token obtained successfully');
+                    console.log(`[M-Pesa Production] 📅 Token expires in ${response.data.expires_in} seconds`);
+                    return this.accessToken;
+                } else {
+                    throw new Error('Invalid token response structure');
+                }
+            } catch (error) {
+                lastError = error;
+                console.error('[M-Pesa Production] ❌ Token request failed:', {
+                    message: error.message,
+                    status: error.response?.status,
+                    data: error.response?.data,
+                    url: this.authUrl
+                });
+                attempt++;
             }
-        } catch (error) {
-            console.error('[M-Pesa Production] ❌ Token request failed:', {
-                message: error.message,
-                status: error.response?.status,
-                data: error.response?.data,
-                url: this.authUrl
-            });
-            throw new Error(`Failed to get access token: ${error.message}`);
         }
+        throw new Error(`Failed to get access token after ${maxRetries} attempts: ${lastError?.message}`);
     }
 
     async initiateSTKPush(phoneNumber, amount, accountReference = 'MKOPAJI', transactionDesc = 'Loan Processing Fee') {

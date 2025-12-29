@@ -21,6 +21,7 @@ module.exports = {
     out_file: './logs/out.log',
     log_file: './logs/combined.log',
     time: true,
+    // Best practice: Set up log monitoring and alerting for these files (e.g., PM2 Plus, Loggly, or custom script)
     
     // Memory and performance
     max_memory_restart: '1G',

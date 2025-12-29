@@ -14,6 +14,33 @@ const ENVIRONMENT = process.env.MPESA_ENVIRONMENT || 'sandbox';
 console.log(`🚀 Starting MKOPAJI Server in ${ENVIRONMENT.toUpperCase()} mode`);
 
 // Middleware
+// Health check endpoint for monitoring
+app.get('/health', async (req, res) => {
+    try {
+        // Check token and MPESA connectivity
+        const paymentService = require('./services/payment-service');
+        let tokenStatus = 'unknown';
+        let mpesaStatus = 'unknown';
+        let tokenError = null;
+        try {
+            const token = await paymentService.getAccessToken();
+            tokenStatus = token ? 'ok' : 'fail';
+        } catch (err) {
+            tokenStatus = 'fail';
+            tokenError = err.message;
+        }
+        // Optionally, add more checks (e.g., test a small MPESA API call)
+        mpesaStatus = tokenStatus === 'ok' ? 'ok' : 'fail';
+        res.json({
+            status: 'ok',
+            tokenStatus,
+            mpesaStatus,
+            tokenError
+        });
+    } catch (e) {
+        res.status(500).json({ status: 'fail', error: e.message });
+    }
+});
 app.use(cors());
 app.use(express.json({ limit: '50mb' })); // Increased limit for M-Pesa callbacks
 app.use(express.urlencoded({ extended: true }));
@@ -547,6 +574,17 @@ process.on('SIGTERM', () => {
 process.on('SIGINT', () => {
     console.log('SIGINT received, shutting down gracefully');
     process.exit(0);
+});
+
+// Catch unhandled promise rejections and uncaught exceptions
+process.on('unhandledRejection', (reason, promise) => {
+    console.error('Unhandled Rejection at:', promise, 'reason:', reason);
+    // Optionally, send alert/notification here
+});
+process.on('uncaughtException', (err) => {
+    console.error('Uncaught Exception thrown:', err);
+    // Optionally, send alert/notification here
+    process.exit(1); // Exit to let PM2 restart
 });
 
 module.exports = app;

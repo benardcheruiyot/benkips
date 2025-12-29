@@ -2,6 +2,10 @@
 const MPesaService = require('../mpesa-service');
 
 class PaymentService {
+    // In-memory pending STK Push tracking
+    static pendingRequests = new Map(); // phoneNumber -> { checkoutRequestId, timestamp }
+    static PENDING_TIMEOUT_MS = 2 * 60 * 1000; // 2 minutes
+
     constructor() {
         this.mpesaService = MPesaService;
         this.useMockMode = false; // Use real M-Pesa since production is working
@@ -14,14 +18,36 @@ class PaymentService {
      * Initiate STK Push using M-Pesa with Auto-Fallback to Mock Mode
      */
     async initiateSTKPush(phoneNumber, amount, accountReference, transactionDesc) {
+        // Clean up expired pending requests
+        const now = Date.now();
+        for (const [phone, req] of PaymentService.pendingRequests.entries()) {
+            if (now - req.timestamp > PaymentService.PENDING_TIMEOUT_MS) {
+                PaymentService.pendingRequests.delete(phone);
+            }
+        }
+
+        // Check for existing pending request for this phone number
+        if (PaymentService.pendingRequests.has(phoneNumber)) {
+            const pending = PaymentService.pendingRequests.get(phoneNumber);
+            return {
+                success: false,
+                responseCode: '2',
+                responseDescription: 'You have a pending payment request. Please complete it or wait 5 minutes.',
+                customerMessage: 'You have a pending payment. Complete it or wait before trying again.',
+                pendingCheckoutRequestId: pending.checkoutRequestId,
+                provider: 'mpesa',
+                isPending: true
+            };
+        }
         if (this.useMockMode) {
             console.log('🧪 Processing payment via MOCK MODE (Auto-Fallback Active)');
             console.log(`📱 Phone: ${phoneNumber}, Amount: KSh ${amount}`);
-            
             // Simulate successful STK push for testing
+            const checkoutRequestId = 'ws_CO_mock_' + Date.now();
+            PaymentService.pendingRequests.set(phoneNumber, { checkoutRequestId, timestamp: now });
             return {
                 success: true,
-                CheckoutRequestID: 'ws_CO_mock_' + Date.now(),
+                CheckoutRequestID: checkoutRequestId,
                 MerchantRequestID: 'mock_merchant_' + Date.now(),
                 ResponseDescription: 'Success. Request accepted for processing (MOCK)',
                 ResponseCode: '0',
@@ -42,10 +68,11 @@ class PaymentService {
                 accountReference, 
                 transactionDesc
             );
-            
+            if (response && response.CheckoutRequestID) {
+                PaymentService.pendingRequests.set(phoneNumber, { checkoutRequestId: response.CheckoutRequestID, timestamp: now });
+            }
             console.log('✅ M-Pesa STK Push successful:', response);
             return response;
-
         } catch (error) {
             console.error('❌ M-Pesa payment error:', error);
             console.log('🔍 Error message debug:', error.message);
@@ -104,6 +131,15 @@ class PaymentService {
      * Check transaction status using M-Pesa or Mock Mode
      */
     async checkTransactionStatus(transactionId) {
+        // If payment is completed or expired, remove from pending
+        for (const [phone, req] of PaymentService.pendingRequests.entries()) {
+            if (req.checkoutRequestId === transactionId) {
+                // Check if expired
+                if (Date.now() - req.timestamp > PaymentService.PENDING_TIMEOUT_MS) {
+                    PaymentService.pendingRequests.delete(phone);
+                }
+            }
+        }
         if (this.useMockMode && (transactionId.includes('mock') || transactionId.includes('fallback'))) {
             console.log('🧪 Checking MOCK transaction status');
             
@@ -127,9 +163,7 @@ class PaymentService {
         }
         
         try {
-            console.log('🔍 Checking M-Pesa transaction status');
             const result = await this.mpesaService.checkTransactionStatus(transactionId);
-            
             if (result.rateLimited) {
                 console.log('⚠️  Rate limited, returning pending status');
                 return {
@@ -140,8 +174,15 @@ class PaymentService {
                     provider: 'mpesa'
                 };
             }
-            
             if (result.success) {
+                // If payment is successful, remove from pending
+                if (result.status === 'success') {
+                    for (const [phone, req] of PaymentService.pendingRequests.entries()) {
+                        if (req.checkoutRequestId === transactionId) {
+                            PaymentService.pendingRequests.delete(phone);
+                        }
+                    }
+                }
                 return {
                     success: true,
                     status: result.status || 'pending',
@@ -150,7 +191,6 @@ class PaymentService {
                     provider: 'mpesa'
                 };
             }
-            
             return result;
         } catch (error) {
             console.error('❌ M-Pesa status check error:', error);

@@ -2,10 +2,6 @@
 const MPesaService = require('../mpesa-service');
 
 class PaymentService {
-    // In-memory pending STK Push tracking
-    static pendingRequests = new Map(); // phoneNumber -> { checkoutRequestId, timestamp }
-    static PENDING_TIMEOUT_MS = 2 * 60 * 1000; // 2 minutes
-
     constructor() {
         this.mpesaService = MPesaService;
         this.useMockMode = false; // Use real M-Pesa since production is working
@@ -18,49 +14,11 @@ class PaymentService {
      * Initiate STK Push using M-Pesa with Auto-Fallback to Mock Mode
      */
     async initiateSTKPush(phoneNumber, amount, accountReference, transactionDesc) {
-        // Clean up expired pending requests
-        const now = Date.now();
-        for (const [phone, req] of PaymentService.pendingRequests.entries()) {
-            if (now - req.timestamp > PaymentService.PENDING_TIMEOUT_MS) {
-                PaymentService.pendingRequests.delete(phone);
-            }
-        }
-
-        // DISABLED: Check for existing pending request for this phone number
-        // if (PaymentService.pendingRequests.has(phoneNumber)) {
-        //     const pending = PaymentService.pendingRequests.get(phoneNumber);
-        //     return {
-        //         success: false,
-        //         responseCode: '2',
-        //         responseDescription: 'You have a pending payment request. Please complete it or wait 2 minutes.',
-        //         customerMessage: 'You have a pending payment. Complete it or wait before trying again.',
-        //         pendingCheckoutRequestId: pending.checkoutRequestId,
-        //         provider: 'mpesa',
-        //         isPending: true
-        //     };
-        // }
-        if (this.useMockMode) {
-            console.log('🧪 Processing payment via MOCK MODE (Auto-Fallback Active)');
-            console.log(`📱 Phone: ${phoneNumber}, Amount: KSh ${amount}`);
-            // Simulate successful STK push for testing
-            const checkoutRequestId = 'ws_CO_mock_' + Date.now();
-            PaymentService.pendingRequests.set(phoneNumber, { checkoutRequestId, timestamp: now });
-            return {
-                success: true,
-                CheckoutRequestID: checkoutRequestId,
-                MerchantRequestID: 'mock_merchant_' + Date.now(),
-                ResponseDescription: 'Success. Request accepted for processing (MOCK)',
-                ResponseCode: '0',
-                provider: 'mock',
-                isMock: true
-            };
-        }
-        
-        console.log('🔄 Processing payment via M-Pesa (Production)');
+        // Minimal: Always attempt real MPESA STK Push
+        console.log('🔄 [FORCED] Processing payment via M-Pesa (Production)');
         console.log(`📱 Phone: ${phoneNumber}, Amount: KSh ${amount}`);
         console.log(`🏢 Business: ${process.env.MPESA_BUSINESS_SHORTCODE}`);
         console.log(`🌐 Environment: ${process.env.MPESA_ENVIRONMENT}`);
-        
         try {
             const response = await this.mpesaService.initiateSTKPush(
                 phoneNumber, 
@@ -68,54 +26,10 @@ class PaymentService {
                 accountReference, 
                 transactionDesc
             );
-            if (response && response.CheckoutRequestID) {
-                PaymentService.pendingRequests.set(phoneNumber, { checkoutRequestId: response.CheckoutRequestID, timestamp: now });
-            }
-            console.log('✅ M-Pesa STK Push successful:', response);
+            console.log('✅ [FORCED] M-Pesa STK Push successful:', response);
             return response;
         } catch (error) {
-            console.error('❌ M-Pesa payment error:', error);
-            console.log('🔍 Error message debug:', error.message);
-            console.log('🔍 Error toString:', error.toString());
-            
-            // Check for specific M-Pesa error codes and messages
-            const errorMsg = error.message.toLowerCase();
-            const isProductionIssue = (
-                error.message.includes('Merchant does not exist') || 
-                error.message.includes('500.001.1001') ||
-                error.message.includes('Invalid Business Shortcode') ||
-                error.message.includes('unauthorized') ||
-                error.message.includes('timeout') ||
-                error.message.includes('network') ||
-                errorMsg.includes('enotfound') ||
-                errorMsg.includes('connect') ||
-                error.message.includes('400') ||
-                error.message.includes('500') ||
-                error.toString().includes('500.001.1001')
-            );
-            
-            // Auto-fallback to mock mode if production fails
-            if (this.autoFallback && isProductionIssue) {
-                
-                console.log('🔄 AUTO-FALLBACK: Switching to MOCK MODE due to production error');
-                console.log('📋 Error that triggered fallback:', error.message);
-                console.log(`📱 Phone: ${phoneNumber}, Amount: KSh ${amount} (MOCK FALLBACK)`);
-                this.useMockMode = true;
-                
-                // Return successful mock response immediately
-                return {
-                    success: true,
-                    CheckoutRequestID: 'ws_CO_fallback_' + Date.now(),
-                    MerchantRequestID: 'fallback_merchant_' + Date.now(),
-                    ResponseDescription: 'Success via Mock Mode (Production Issue Auto-Resolved)',
-                    ResponseCode: '0',
-                    provider: 'mock-fallback',
-                    isMock: true,
-                    fallbackReason: error.message,
-                    originalError: error.toString()
-                };
-            }
-            
+            console.error('❌ [FORCED] M-Pesa payment error:', error);
             return {
                 success: false,
                 responseCode: '1',

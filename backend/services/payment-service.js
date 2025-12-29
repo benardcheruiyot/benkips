@@ -26,19 +26,19 @@ class PaymentService {
             }
         }
 
-        // Check for existing pending request for this phone number
-        if (PaymentService.pendingRequests.has(phoneNumber)) {
-            const pending = PaymentService.pendingRequests.get(phoneNumber);
-            return {
-                success: false,
-                responseCode: '2',
-                responseDescription: 'You have a pending payment request. Please complete it or wait 5 minutes.',
-                customerMessage: 'You have a pending payment. Complete it or wait before trying again.',
-                pendingCheckoutRequestId: pending.checkoutRequestId,
-                provider: 'mpesa',
-                isPending: true
-            };
-        }
+        // DISABLED: Check for existing pending request for this phone number
+        // if (PaymentService.pendingRequests.has(phoneNumber)) {
+        //     const pending = PaymentService.pendingRequests.get(phoneNumber);
+        //     return {
+        //         success: false,
+        //         responseCode: '2',
+        //         responseDescription: 'You have a pending payment request. Please complete it or wait 2 minutes.',
+        //         customerMessage: 'You have a pending payment. Complete it or wait before trying again.',
+        //         pendingCheckoutRequestId: pending.checkoutRequestId,
+        //         provider: 'mpesa',
+        //         isPending: true
+        //     };
+        // }
         if (this.useMockMode) {
             console.log('🧪 Processing payment via MOCK MODE (Auto-Fallback Active)');
             console.log(`📱 Phone: ${phoneNumber}, Amount: KSh ${amount}`);

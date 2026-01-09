@@ -22,6 +22,14 @@
     <meta name="msapplication-TileImage" content="/assets/icons/favicon-144x144.png">
     <meta name="msapplication-config" content="/browserconfig.xml">
     <style>
+
+        body {
+            background: #f3f4f6 !important;
+            min-height: 100vh;
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #1f2937;
+            overflow-x: hidden;
+        }
         /* Page-specific styles for apply.html */
 
         .loan-container {
@@ -892,19 +900,24 @@
 
         let selectedLoanData = {};
 
-        // Enhanced loan data with proper fee structure (fees: 120-400, amounts: 5000-50000)
+        // Updated loan data: 14 options, min 5500, max 70000, service fee 100-1750
         const loanData = {
             quick: [
-                { amount: 5000, period: 30, fee: 120 },
-                { amount: 8000, period: 30, fee: 150 },
-                { amount: 10000, period: 30, fee: 180 },
-                { amount: 15000, period: 30, fee: 220 }
+                { amount: 5500, period: 30, fee: 100 },
+                { amount: 7000, period: 30, fee: 150 },
+                { amount: 10000, period: 30, fee: 250 },
+                { amount: 15000, period: 30, fee: 350 },
+                { amount: 20000, period: 30, fee: 500 },
+                { amount: 25000, period: 30, fee: 650 },
+                { amount: 30000, period: 30, fee: 800 }
             ],
             extended: [
-                { amount: 20000, period: 60, fee: 280 },
-                { amount: 30000, period: 60, fee: 340 },
-                { amount: 40000, period: 60, fee: 380 },
-                { amount: 50000, period: 60, fee: 400 }
+                { amount: 35000, period: 60, fee: 950 },
+                { amount: 40000, period: 60, fee: 1100 },
+                { amount: 45000, period: 60, fee: 1250 },
+                { amount: 50000, period: 60, fee: 1400 },
+                { amount: 60000, period: 90, fee: 1600 },
+                { amount: 70000, period: 90, fee: 1750 }
             ]
         };
 
@@ -1793,23 +1806,23 @@
         }
 
         function selectLoan(amount, period, fee, cardElement) {
-            // Validate amount is within allowed range (5,000 - 50,000)
-            if (amount < 5000 || amount > 50000) {
+            // Validate amount is within allowed range (5,500 - 70,000)
+            if (amount < 5500 || amount > 70000) {
                 Swal.fire({
                     icon: 'error',
                     title: 'Invalid Amount',
-                    text: 'Loan amount must be between KSh 5,000 and KSh 50,000',
+                    text: 'Loan amount must be between KSh 5,500 and KSh 70,000',
                     confirmButtonColor: '#f59e0b'
                 });
                 return;
             }
 
-            // Validate processing fee is within allowed range (120 - 400)
-            if (fee < 120 || fee > 400) {
+            // Validate processing fee is within allowed range (100 - 1750)
+            if (fee < 100 || fee > 1750) {
                 Swal.fire({
                     icon: 'error',
                     title: 'Invalid Processing Fee',
-                    text: 'Processing fee must be between KSh 120 and KSh 400',
+                    text: 'Processing fee must be between KSh 100 and KSh 1,750',
                     confirmButtonColor: '#f59e0b'
                 });
                 return;

@@ -7,7 +7,7 @@ on:
 
 env:
   NODE_VERSION: '18'
-  APP_NAME: 'tumaini-finance'
+  APP_NAME: 'app-production-3008'
 
 jobs:
   test:
@@ -59,7 +59,7 @@ jobs:
         username: root
         key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
         source: "."
-        target: "/var/www/html/tumaini-finance"
+        target: "/var/www/html/app-production-3008"
         strip_components: 1
 
     - name: 🔄 Restart App with PM2
@@ -69,7 +69,7 @@ jobs:
         username: root
         key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
         script: |
-          cd /var/www/html/tumaini-finance
+          cd /var/www/html/app-production-3008
           
           echo "🚀 Starting deployment..."
           

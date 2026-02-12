@@ -113,7 +113,7 @@ print_status "Creating PM2 ecosystem configuration..."
 cat > ecosystem.config.js << EOF
 module.exports = {
     apps: [{
-        name: 'tumaini-finance',
+        name: 'app-production-3008',
         script: 'backend/server.js',
         instances: 'max',
         exec_mode: 'cluster',
@@ -205,13 +205,13 @@ print_status "Next Steps:"
 echo "1. Configure your domain and SSL certificate (tumaini.mkopaji.com)"
 echo "2. Update callback URLs in IntaSend dashboard to use tumaini.mkopaji.com"
 echo "3. Test with a small transaction"
-echo "4. Monitor logs: pm2 logs tumaini-finance"
+echo "4. Monitor logs: pm2 logs app-production-3008"
 echo "5. Monitor application: pm2 monit"
 echo ""
 print_status "Useful Commands:"
-echo "- View logs: pm2 logs tumaini-finance"
-echo "- Restart app: pm2 restart tumaini-finance"
-echo "- Stop app: pm2 stop tumaini-finance"
+echo "- View logs: pm2 logs app-production-3008"
+echo "- Restart app: pm2 restart app-production-3008"
+echo "- Stop app: pm2 stop app-production-3008"
 echo "- Monitor: pm2 monit"
 echo "- Health check: curl http://localhost:6000/api/health"
 echo ""

@@ -22,11 +22,16 @@ else
   exit 1
 fi
 
-# Stop existing PM2 process (force)
-pm2 delete kopa-mkopaji || true
 
-# Start application with PM2 (force reload)
-pm2 start ecosystem.config.js --env production --name kopa-mkopaji --update-env
+# Stop and delete all old PM2 processes (force)
+pm2 delete kopa-mkopaji || true
+pm2 delete kopa-mkopaji-3002 || true
+pm2 delete mkopaji-production || true
+pm2 delete pewa-mkopaje-production || true
+pm2 delete app-production-3008 || true
+
+# Start application with PM2 using the correct name
+pm2 start ecosystem.config.js --env production --name app-production-3008 --update-env
 
 # Save PM2 configuration
 pm2 save

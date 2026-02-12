@@ -1,44 +1,31 @@
 // PM2 Ecosystem Configuration for KOPA-MKOPAJI Production
 module.exports = {
   apps: [{
-    name: 'kopa-mkopaji-3002',
+    name: 'app-production-3008',
     script: 'backend/server.js',
-    instances: 'max', // Use all available CPU cores
+    instances: 'max',
     exec_mode: 'cluster',
-    
-    // Environment variables
     env: {
       NODE_ENV: 'development',
-      PORT: 3002
+      PORT: 3008
     },
     env_production: {
       NODE_ENV: 'production',
-      PORT: 3002
+      PORT: 3008
     },
-    
-    // Logging
     error_file: './logs/err.log',
     out_file: './logs/out.log',
     log_file: './logs/combined.log',
     time: true,
-    // Best practice: Set up log monitoring and alerting for these files (e.g., PM2 Plus, Loggly, or custom script)
-    
-    // Memory and performance
     max_memory_restart: '1G',
     node_args: '--max_old_space_size=1024',
-    
-    // Auto restart configuration
     autorestart: true,
-    watch: false, // Disable in production
+    watch: false,
     max_restarts: 10,
     min_uptime: '10s',
-    
-    // Advanced features
     kill_timeout: 5000,
     listen_timeout: 3000,
     restart_delay: 4000,
-    
-    // Health monitoring
     health_check_grace_period: 3000,
     health_check_fatal_exceptions: true
   }]

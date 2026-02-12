@@ -1,6 +1,8 @@
-# mloan
 
-Local development copy of the mloan project. This clone is prepared for pushing to GitHub.
+# Tumaini Finance
+
+
+Local development copy of Tumaini Finance, a modern digital lending platform with secure M-Pesa integration and instant loan processing. This clone is prepared for pushing to GitHub.
 
 - Repo prepared on: 2025-11-18
 - Branch: `feature/local-edits` (existing)

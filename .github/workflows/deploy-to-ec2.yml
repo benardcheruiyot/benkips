@@ -7,7 +7,7 @@ on:
 
 env:
   NODE_VERSION: '18'
-  APP_NAME: 'kopa-mkopaji'
+  APP_NAME: 'tumaini-finance'
 
 jobs:
   test:
@@ -59,7 +59,7 @@ jobs:
         username: root
         key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
         source: "."
-        target: "/var/www/html/kopa-mkopaji"
+        target: "/var/www/html/tumaini-finance"
         strip_components: 1
 
     - name: 🔄 Restart App with PM2
@@ -69,7 +69,7 @@ jobs:
         username: root
         key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
         script: |
-          cd /var/www/html/kopa-mkopaji
+          cd /var/www/html/tumaini-finance
           
           echo "🚀 Starting deployment..."
           
@@ -108,7 +108,7 @@ jobs:
           # Health check
           echo "🔍 Performing health check..."
           sleep 5
-          if curl -f http://localhost:3002/api/health > /dev/null 2>&1; then
+          if curl -f http://localhost:6000/api/health > /dev/null 2>&1; then
             echo "✅ Health check passed"
           else
             echo "⚠️  Health check failed - checking logs..."
@@ -126,14 +126,14 @@ jobs:
           echo "🎉 Deployment completed successfully!"
           echo "📊 Final status:"
           pm2 status ${{ env.APP_NAME }}
-          echo "🌐 Application should be available at: http://${{ secrets.EC2_HOST }}:3002"
+          echo "🌐 Application should be available at: http://${{ secrets.EC2_HOST }}:6000"
 
     - name: 📱 Slack notification (success)
       if: success()
       run: |
         if [ -n "${{ secrets.SLACK_WEBHOOK_URL }}" ]; then
           curl -X POST -H 'Content-type: application/json' \
-          --data '{"text":"✅ Deployment successful! Kopa Mkopa app has been deployed to production server."}' \
+          --data '{"text":"✅ Deployment successful! Tumaini Finance app has been deployed to production server."}' \
           ${{ secrets.SLACK_WEBHOOK_URL }}
         fi
 

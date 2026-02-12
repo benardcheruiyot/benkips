@@ -83,7 +83,7 @@ sudo ufw --force enable
 sudo ufw allow ssh
 sudo ufw allow 80/tcp
 sudo ufw allow 443/tcp
-sudo ufw allow 3002/tcp
+sudo ufw allow 3008/tcp
 
 # Install Nginx (optional but recommended)
 echo "Installing Nginx..."
@@ -98,7 +98,7 @@ server {
     server_name _;
 
     location / {
-        proxy_pass http://localhost:3002;
+        proxy_pass http://localhost:3008;
         proxy_http_version 1.1;
         proxy_set_header Upgrade $http_upgrade;
         proxy_set_header Connection 'upgrade';

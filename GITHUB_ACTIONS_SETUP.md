@@ -98,7 +98,7 @@ Create `/home/ubuntu/kopa-mkopaji/.env.production`:
 
 ```env
 NODE_ENV=production
-PORT=3000
+PORT=3008
 
 # M-Pesa Configuration
 MPESA_ENVIRONMENT=production
@@ -122,7 +122,7 @@ sudo ufw enable
 sudo ufw allow ssh
 sudo ufw allow 80/tcp
 sudo ufw allow 443/tcp
-sudo ufw allow 3000/tcp  # Application port
+sudo ufw allow 3008/tcp  # Application port
 sudo ufw status
 ```
 
@@ -163,7 +163,7 @@ server {
     ssl_certificate_key /etc/letsencrypt/live/your-domain.com/privkey.pem;
 
     location / {
-        proxy_pass http://localhost:3000;
+        proxy_pass http://localhost:3008;
         proxy_http_version 1.1;
         proxy_set_header Upgrade $http_upgrade;
         proxy_set_header Connection 'upgrade';
@@ -221,7 +221,7 @@ pm2 set pm2-logrotate:compress true
 # On your EC2 server, monitor the deployment
 pm2 logs fundfast-production --lines 50
 pm2 status
-curl http://localhost:3000/api/health
+curl http://localhost:3008/api/health
 ```
 
 ## Troubleshooting

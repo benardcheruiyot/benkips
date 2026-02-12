@@ -18,7 +18,7 @@
 
 ### 3. Server Configuration
 - [ ] Environment file `.env.production` configured
-- [ ] Firewall configured (ports 22, 80, 443, 3000)
+- [ ] Firewall configured (ports 22, 80, 443, 3008)
 - [ ] SSL certificate installed (recommended)
 - [ ] Nginx reverse proxy configured (recommended)
 
@@ -50,7 +50,7 @@ pm2 save
 pm2 startup
 
 # 6. Test health endpoint
-curl http://localhost:3000/api/health
+curl http://localhost:3008/api/health
 ```
 
 ### GitHub Actions Automated Deployment
@@ -63,7 +63,7 @@ curl http://localhost:3000/api/health
 
 ### 1. Health Checks
 - [ ] Application starts without errors
-- [ ] Health endpoint responds: `curl http://localhost:3000/api/health`
+- [ ] Health endpoint responds: `curl http://localhost:3008/api/health`
 - [ ] PM2 shows app running: `pm2 status`
 - [ ] Logs are clean: `pm2 logs fundfast-production`
 

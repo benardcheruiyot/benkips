@@ -36,7 +36,7 @@ pm2 status
 
 # Health check
 sleep 5
-if curl -f http://localhost:3002/api/health > /dev/null 2>&1; then
+if curl -f http://localhost:3008/api/health > /dev/null 2>&1; then
   echo "✅ Health check passed"
 else
   echo "⚠️  Health check failed - checking logs..."

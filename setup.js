@@ -51,7 +51,7 @@ async function setupWizard() {
         console.log('\n🌐 CALLBACK CONFIGURATION\n');
         console.log('For local development, use ngrok:');
         console.log('1. Install ngrok: npm install -g ngrok');
-        console.log('2. Run: ngrok http 3002');
+        console.log('2. Run: ngrok http 3008');
         console.log('3. Copy the https URL (e.g., https://abc123.ngrok.io)\n');
         
         const callbackUrl = await askQuestion('Enter your callback URL: ');
@@ -69,7 +69,7 @@ MPESA_CALLBACK_URL=${callbackUrl}/api/mpesa-callback
 MPESA_TIMEOUT_URL=${callbackUrl}/api/mpesa-timeout
 MPESA_RESULT_URL=${callbackUrl}/api/mpesa-result
 MPESA_ENVIRONMENT=${environment}
-PORT=3002
+PORT=3008
 NODE_ENV=development
 `;
 
@@ -79,7 +79,7 @@ NODE_ENV=development
         console.log('Created .env file with your configuration.');
         console.log('\nNEXT STEPS:');
         console.log('1. Start the server: npm run dev');
-        console.log('2. Open browser: http://localhost:3002');
+        console.log('2. Open browser: http://localhost:3008');
         console.log('3. Test with a small amount (1-100 KSh)');
         console.log('4. Use test phone numbers from Daraja Portal');
         console.log('\nTROUBLESHOOTING:');

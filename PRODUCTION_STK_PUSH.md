@@ -22,7 +22,7 @@ You are now in **PRODUCTION MODE** with **REAL MONEY TRANSACTIONS**. Every STK p
 - **KSh 50,000 loan**: KSh 400 processing fee
 
 ### Payment Flow
-1. **Customer applies** for loan at http://localhost:3000/apply
+1. **Customer applies** for loan at http://localhost:3008/apply
 2. **STK Push sent** to customer's phone (REAL)
 3. **Customer enters PIN** to authorize payment (REAL MONEY)
 4. **Money deducted** from customer's M-Pesa account
@@ -94,7 +94,7 @@ KSh 10 - Verify full flow works
 ### Server Status
 ```bash
 # Check server status
-netstat -ano | findstr :3000
+netstat -ano | findstr :3008
 
 # View real-time logs
 # Terminal shows all transactions
@@ -136,7 +136,7 @@ taskkill /f /im node.exe
 ## 🎯 READY FOR PRODUCTION!
 
 **Current Status**: ✅ LIVE with real money transactions  
-**Server**: http://localhost:3000/apply  
+**Server**: http://localhost:3008/apply  
 **Till Number**: 5892851 (PRODUCTION)  
 **Webhook**: Active monitoring  
 

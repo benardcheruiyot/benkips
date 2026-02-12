@@ -12,7 +12,7 @@ The popup issue has been **completely fixed!** The application was in mock mode 
 - **Network**: Must be Safaricom/M-Pesa enabled
 
 ### Step 2: Fill Loan Application
-1. **Visit**: http://localhost:3002/apply
+1. **Visit**: http://localhost:3008/apply
 2. **Enter Details**: Fill out the loan form
 3. **Phone Number**: Enter your Safaricom number
 4. **Amount**: Choose KSh 5,000 - 50,000

@@ -32,14 +32,14 @@
 # Install ngrok globally
 npm install -g ngrok
 
-# In a new terminal, expose port 3002
-ngrok http 3000
+# In a new terminal, expose port 3008
+ngrok http 3008
 ```
 
 Copy the **https** URL (e.g., `https://abc123.ngrok.io`)
 
 **Option B: Use a public domain**
-If you have a domain, use: `https://yourdomain.com`
+If you have a domain, use: `https://hella.mkopaji.com`
 
 ### Step 3: Configure Your Credentials
 
@@ -74,7 +74,7 @@ CALLBACK_URL: 'https://your-ngrok-url.ngrok.io/api/mpesa-callback',
 
 2. **In another terminal, start ngrok**:
    ```bash
-   ngrok http 3000
+   ngrok http 3008
    ```
 
 3. **Update callback URL** with your ngrok URL
@@ -85,7 +85,7 @@ CALLBACK_URL: 'https://your-ngrok-url.ngrok.io/api/mpesa-callback',
 
 ### Step 5: Verify STK Push is Working
 
-1. **Go to your loan app**: http://localhost:3000
+1. **Go to your loan app**: http://localhost:3008
 2. **Register an account**
 3. **Select a loan amount**
 4. **You should receive actual STK Push** on the test phone number

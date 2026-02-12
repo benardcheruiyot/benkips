@@ -1,4 +1,4 @@
 @echo off
 echo Opening MKOPAJI in Chrome...
-start "" chrome "http://localhost:3002/apply"
+start "" chrome "http://localhost:3008/apply"
 echo MKOPAJI opened successfully!

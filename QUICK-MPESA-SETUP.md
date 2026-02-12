@@ -24,7 +24,7 @@ MPESA_CONSUMER_KEY=your_consumer_key_here
 MPESA_CONSUMER_SECRET=your_consumer_secret_here
 MPESA_BUSINESS_SHORTCODE=174379
 MPESA_PASSKEY=your_passkey_here
-MPESA_CALLBACK_URL=http://localhost:3000/api/mpesa-callback
+MPESA_CALLBACK_URL=https://hella.mkopaji.com/api/mpesa-callback
 MPESA_ENVIRONMENT=sandbox
 ```
 

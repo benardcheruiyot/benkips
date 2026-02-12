@@ -29,16 +29,16 @@ MPESA_PASSKEY=your_production_passkey
 PAYMENT_PROVIDER=mpesa
 
 # Server Configuration
-PORT=3000
+PORT=3008
 HOST=0.0.0.0
 
 # Business Information
 BUSINESS_NAME=Your Business Name
 
 # Production Callback URLs (Your actual domain)
-MPESA_CALLBACK_URL=https://yourdomain.com/api/mpesa-callback
-MPESA_TIMEOUT_URL=https://yourdomain.com/api/mpesa-timeout
-MPESA_RESULT_URL=https://yourdomain.com/api/mpesa-result
+MPESA_CALLBACK_URL=https://hella.mkopaji.com/api/mpesa-callback
+MPESA_TIMEOUT_URL=https://hella.mkopaji.com/api/mpesa-timeout
+MPESA_RESULT_URL=https://hella.mkopaji.com/api/mpesa-result
 MPESA_ENVIRONMENT=production
 JWT_SECRET=your-super-secure-jwt-secret-here
 ENCRYPTION_KEY=your-32-character-encryption-key
@@ -46,7 +46,7 @@ ENCRYPTION_KEY=your-32-character-encryption-key
 # Email Configuration (for notifications)
 SMTP_HOST=smtp.gmail.com
 SMTP_PORT=587
-SMTP_USER=noreply@yourdomain.com
+SMTP_USER=noreply@hella.mkopaji.com
 SMTP_PASS=your-email-password
 
 # SMS Configuration (for notifications)
@@ -68,7 +68,7 @@ The service automatically detects production environment and switches to live mo
 #### Server Requirements:
 - ✅ Node.js 16+ installed
 - ✅ SSL certificate configured
-- ✅ Firewall configured (ports 80, 443, 3000)
+- ✅ Firewall configured (ports 80, 443, 3008)
 - ✅ Process manager (PM2) installed
 - ✅ Database setup (MongoDB/PostgreSQL)
 - ✅ Backup strategy in place
@@ -89,7 +89,7 @@ The service automatically detects production environment and switches to live mo
 - ✅ Uptime monitoring
 
 ### Step 7: Testing Production Setup
-1. Run health check: `curl https://yourdomain.com/api/health`
+1. Run health check: `curl https://hella.mkopaji.com/api/health`
 2. Test small payment (KSh 1)
 3. Verify webhook delivery
 4. Check transaction status

@@ -7,7 +7,7 @@ The **400 Bad Request error has been completely resolved!**
 ### 🔧 Current Configuration
 
 - **Payment Mode**: MOCK MODE (Testing)
-- **Server Status**: ✅ Running on port 3000
+- **Server Status**: ✅ Running on port 3008
 - **M-Pesa Integration**: ✅ Mock mode enabled
 - **Application**: ✅ Fully functional
 
@@ -20,7 +20,7 @@ The **400 Bad Request error has been completely resolved!**
 
 ### 📱 How to Test
 
-1. **Visit**: http://localhost:3000/apply
+1. **Visit**: http://localhost:3008/apply
 2. **Fill Form**: Enter any loan details (KSh 5,000 - 50,000)
 3. **Phone Number**: Use any Kenyan phone number format
 4. **Process Payment**: Mock payment will be simulated

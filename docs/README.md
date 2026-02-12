@@ -81,7 +81,7 @@ MPESA_BUSINESS_SHORTCODE=174379
 MPESA_PASSKEY=your_passkey
 MPESA_CALLBACK_URL=https://your-domain.com/api/mpesa-callback
 MPESA_ENVIRONMENT=sandbox
-PORT=3000
+PORT=3008
 ```
 
 ### 4. Start Application
@@ -94,7 +94,7 @@ npm run dev
 npm start
 ```
 
-Access the application at: `http://localhost:3000`
+Access the application at: `http://localhost:3008`
 
 ## 🔧 M-Pesa Integration Setup
 
@@ -110,8 +110,8 @@ Access the application at: `http://localhost:3000`
    # Install ngrok globally
    npm install -g ngrok
    
-   # Expose port 3000
-   ngrok http 3000
+   # Expose port 3008
+   ngrok http 3008
    
    # Update callback URL in config with ngrok URL
    ```
@@ -226,7 +226,7 @@ npm run format     # Prettier code formatting
 
 2. **Local Testing**:
    ```bash
-   curl -X POST http://localhost:3000/api/health
+   curl -X POST http://localhost:3008/api/health
    ```
 
 ## 🚀 Deployment
@@ -288,7 +288,7 @@ sudo certbot --nginx -d yourdomain.com
 4. **Server Not Starting**:
    ```bash
    # Check if port is in use
-   netstat -ano | findstr :3000
+   netstat -ano | findstr :3008
    
    # Kill process using port
    taskkill /PID <PID> /F

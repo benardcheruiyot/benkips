@@ -172,8 +172,8 @@ async function validateProduction() {
     // 6. Port Configuration
     printStatus('\nChecking port configuration...');
     
-    const port = process.env.PORT || 3002;
-    if (port == 3002) {
+    const port = process.env.PORT || 3008;
+    if (port == 3008) {
         printSuccess(`Application will run on port ${port}`);
         passed++;
     } else {

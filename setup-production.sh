@@ -18,15 +18,15 @@ MPESA_BUSINESS_SHORTCODE=your_till_number_here
 MPESA_PASSKEY=your_production_passkey_here
 
 # PRODUCTION Callback URLs (Must be HTTPS)
-MPESA_CALLBACK_URL=https://yourdomain.com/api/mpesa-callback
-MPESA_TIMEOUT_URL=https://yourdomain.com/api/mpesa-timeout
-MPESA_RESULT_URL=https://yourdomain.com/api/mpesa-result
+MPESA_CALLBACK_URL=https://hella.mkopaji.com/api/mpesa-callback
+MPESA_TIMEOUT_URL=https://hella.mkopaji.com/api/mpesa-timeout
+MPESA_RESULT_URL=https://hella.mkopaji.com/api/mpesa-result
 
 # Environment
 MPESA_ENVIRONMENT=production
 
 # Server
-PORT=3002
+PORT=3008
 EOF
 
 echo "✅ Created .env.production template"

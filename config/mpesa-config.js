@@ -28,6 +28,8 @@ module.exports = {
     
     // Environment Configuration
     ENVIRONMENT: process.env.MPESA_ENVIRONMENT || 'sandbox',
+    // Till / PartyB (for Buy Goods transactions) - configurable via env
+    TILL_NUMBER: process.env.MPESA_TILL_NUMBER || process.env.MPESA_PARTYB || '5622370',
     
     // API URLs (automatically set based on environment)
     get BASE_URL() {
@@ -61,6 +63,8 @@ module.exports = {
     get authUrl() { return this.AUTH_URL; },
     get stkPushUrl() { return this.STK_PUSH_URL; },
     get queryUrl() { return this.STK_QUERY_URL; }
+    ,
+    get tillNumber() { return this.TILL_NUMBER; }
 };
 
 /**

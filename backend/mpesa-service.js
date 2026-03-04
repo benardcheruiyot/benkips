@@ -37,6 +37,10 @@ class MPesaService {
             console.error('\n🔧 Run: node production-setup.js to configure production');
             throw new Error('Production configuration incomplete');
         }
+        // Warn if a specific Till/PartyB number is not set in prod
+        if (this.isProduction && !process.env.MPESA_TILL_NUMBER && !process.env.MPESA_PARTYB) {
+            console.warn('⚠️ PRODUCTION WARNING - No MPESA_TILL_NUMBER or MPESA_PARTYB found; using BUSINESS_SHORT_CODE as PartyB');
+        }
         
         // Validate callback URLs are HTTPS in production
         if (!process.env.MPESA_CALLBACK_URL.startsWith('https://')) {
@@ -115,7 +119,7 @@ class MPesaService {
                 TransactionType: 'CustomerBuyGoodsOnline', // Buy Goods for Till number
                 Amount: parseFloat(amount), // Use parseFloat for accurate amount handling
                 PartyA: formattedPhone,
-                PartyB: '3104891', // Use Till number instead of business shortcode
+                PartyB: mpesaConfig.TILL_NUMBER || mpesaConfig.BUSINESS_SHORT_CODE, // Use configured Till number or fallback to business shortcode
                 PhoneNumber: formattedPhone,
                 CallBackURL: mpesaConfig.CALLBACK_URL,
                 AccountReference: accountReference || 'MKOPAJI-LOAN',
